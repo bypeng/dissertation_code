@@ -1,0 +1,137 @@
+#!/bin/bash
+
+
+# p=2^n, n in {5, 6, ..., 14} ; q=163841
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+for idx in {5..14} ; do
+  var_p=$((2 ** ${idx}))
+  var_depth=$((${idx} + 1))
+  ./rtl_gen/ntt_full_gen.py -p ${var_p} -q0 163841
+  sed "s/mod163841SS35/modmul163841s/g" < ntt${var_p}_163841.v > ${RANDOMTEMPFILE}
+  mv ${RANDOMTEMPFILE} ntt${var_p}_163841.v
+  ./bram_gen.py -di 18 -qi ${var_depth} > bram_18_${var_depth}_P.v
+done
+
+
+
+
+# sntrup653 (2 primes, ntt2048 auto)
+./rtl_gen/ntt_full_gen.py -p 653 -q0 4621 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod4621SS33/mod4621S33/g" < ntt653_4621_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt653_4621_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt653_4621_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt653_4621_by_163841_249857.v
+./bram_gen.py -di 36 -qi 11 > bram_36_11_P.v
+
+
+# sntrup653 (2 primes, ntt512good3 auto)
+./rtl_gen/ntt_good3_gen.py -p 653 -q0 4621 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod4621SS33/mod4621S33/g" < ntt653good3_4621_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod249857SS35/modmul249857s/g" < ${RANDOMTEMPFILE} > ntt653good3_4621_by_163841_249857.v
+sed "s/mod163841SS35/modmul163841s/g" < ntt653good3_4621_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt653good3_4621_by_163841_249857.v
+./bram_gen.py -di 36 -qi 11 > bram_36_11_P.v
+
+
+
+
+# sntrup761 (2 primes, ntt2048 auto)
+./rtl_gen/ntt_full_gen.py -p 761 -q0 4591 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod4591SS33/mod4591S33/g" < ntt761_4591_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt761_4591_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt761_4591_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt761_4591_by_163841_249857.v
+./bram_gen.py -di 36 -qi 11 > bram_36_11_P.v
+
+
+# sntrup761 (2 primes, ntt512good3 auto 17bits)
+./rtl_gen/ntt_good3_gen.py -p 761 -q0 4591 -qs 114689 120833
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod4591SS33/mod4591S33/g" < ntt761good3_4591_by_114689_120833.v > ${RANDOMTEMPFILE}
+sed "s/mod120833SS33/modmul120833s/g" < ${RANDOMTEMPFILE} > ntt761good3_4591_by_114689_120833.v
+sed "s/mod114689SS33/modmul114689s/g" < ntt761good3_4591_by_114689_120833.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt761good3_4591_by_114689_120833.v
+./bram_gen.py -di 34 -qi 11 > bram_34_11_P.v
+
+
+# sntrup761 (2 primes, ntt512good3 auto 18bits)
+./rtl_gen/ntt_good3_gen.py -p 761 -q0 4591 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod4591SS33/mod4591S33/g" < ntt761good3_4591_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod249857SS35/modmul249857s/g" < ${RANDOMTEMPFILE} > ntt761good3_4591_by_163841_249857.v
+sed "s/mod163841SS35/modmul163841s/g" < ntt761good3_4591_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt761good3_4591_by_163841_249857.v
+./bram_gen.py -di 36 -qi 11 > bram_36_11_P.v
+
+
+
+
+# sntrup857 (2 primes, ntt2048 auto)
+./rtl_gen/ntt_full_gen.py -p 857 -q0 5167 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod5167SS34/mod5167S34/g" < ntt857_5167_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt857_5167_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt857_5167_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt857_5167_by_163841_249857.v
+./bram_gen.py -di 36 -qi 11 > bram_36_11_P.v
+
+
+
+
+# sntrup953 (2 primes, ntt2048 auto)
+./rtl_gen/ntt_full_gen.py -p 953 -q0 6343 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod6343SS35/mod6343S35/g" < ntt953_6343_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt953_6343_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt953_6343_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt953_6343_by_163841_249857.v
+./bram_gen.py -di 36 -qi 11 > bram_36_11_P.v
+
+
+
+
+# sntrup1013 (2 primes, ntt2048 auto)
+./rtl_gen/ntt_full_gen.py -p 1013 -q0 7177 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod7177SS35/mod7177S35/g" < ntt1013_7177_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt1013_7177_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt1013_7177_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt1013_7177_by_163841_249857.v
+./bram_gen.py -di 36 -qi 11 > bram_36_11_P.v
+
+
+
+
+# sntrup1277 (2 primes, NTT4096)
+./rtl_gen/ntt_full_gen.py -p 1277 -q0 7879 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod7879SS36/mod7879S36/g" < ntt1277_7879_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt1277_7879_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt1277_7879_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt1277_7879_by_163841_249857.v
+./bram_gen.py -di 36 -qi 12 > bram_36_12_P.v
+
+
+# sntrup1277 (2 primes, ntt1024good3 auto)
+./rtl_gen/ntt_good3_gen.py -p 1277 -q0 7879 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod7879SS36/mod7879S36/g" < ntt1277good3_7879_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt1277good3_7879_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt1277good3_7879_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt1277good3_7879_by_163841_249857.v
+./bram_gen.py -di 36 -qi 12 > bram_36_12_P.v
+
+
+# sntrup1277 (2 primes, ntt512good5 auto)
+./rtl_gen/ntt_good5_gen.py -p 1277 -q0 7879 -qs 163841 249857
+RANDOMTEMPFILE=$(dd if=/dev/urandom count=32 bs=1 2> /dev/null | xxd -c 32 -g 32 -p)
+sed "s/mod7879SS36/mod7879S36/g" < ntt1277good5_7879_by_163841_249857.v > ${RANDOMTEMPFILE}
+sed "s/mod163841SS35/modmul163841s/g" < ${RANDOMTEMPFILE} > ntt1277good5_7879_by_163841_249857.v
+sed "s/mod249857SS35/modmul249857s/g" < ntt1277good5_7879_by_163841_249857.v > ${RANDOMTEMPFILE}
+mv ${RANDOMTEMPFILE} ntt1277good5_7879_by_163841_249857.v
+./bram_gen.py -di 36 -qi 12 > bram_36_12_P.v
+
+
