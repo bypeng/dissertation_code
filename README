@@ -7,11 +7,12 @@ Update Log
 2025/1/24: README added.
 
 This repository includes the python scripts, verilog RTL codes as the supplemental data in my
-doctoral dissertation (which is available and able to be accessed at [URL: TO BE ANNOUNCED]).
+doctoral dissertation, where the defense is passed on 2025/1/16 and which is available at
+[URL: TO BE ANNOUNCED].
 
 The code misc/sntrup_any is the modification from the reference code of NTRUPrime 3rd round
-submission to NIST, to provide the testing data. MIT License protects all of the other genuine
-codes.
+submission to NIST, to provide the testing data. MIT License protects all of the other
+genuine codes.
 
 For the details in this repository, see the dissertation.
 
